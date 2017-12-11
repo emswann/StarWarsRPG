@@ -14,6 +14,9 @@ $(document).ready(function(){
 
   var arrCharacters = [objObi, objLuke, objDarth, objLeia];
 
+  var currCharacter,
+      currDefender;
+
   function character(strShortName, strFullName, intHealthPts, intAttPow, 
                      intCAttPow) {
     this.strShortName = strShortName;
@@ -23,30 +26,38 @@ $(document).ready(function(){
     this.intCAttPow   = intCAttPow;
   }
 
-  function moveToChosen(strChosenName){
-    var strThisElement   = $("#" + strChosenName);
+  function findCharObject(strShortName) {
+    for (var i = 0; i < arrCharacters; i++) {
+      if (strShortName === arrCharacter[i].strShortName) {
+        return arrCharacter[i];
+      }
+    }
 
-    strThisElement.removeClass("choose").addClass("chosen");
-
-    $("#chosen-char").append($(strThisElement));
+    return undefined;
   }
 
-  function moveToEnemies(strEnemyName) {
-    var strThisElement   = $("#" + strEnemyName),
-        strParentElement = strThisElement[0].parentNode;
+  function moveToChosen(chosenElement){
+    var parentElement = chosenElement[0].parentNode;
 
-    strThisElement.removeClass("choose").addClass("enemy");
+    chosenElement.removeClass("choose").addClass("chosen");
 
-    $("#enemy-row").append($(strParentElement));
+    $("#chosen-row").append(parentElement);
   }
 
-  function moveToDefend(strDefenderName) {
-    var strThisElement   = $("#" + strDefenderName),
-        strParentElement = strThisElement[0].parentNode;
+  function moveToEnemies(enemyElement) {
+    var parentElement = enemyElement[0].parentNode;
 
-    strThisElement.removeClass("enemy").addClass("defender");
+    enemyElement.removeClass("choose").addClass("enemy");
 
-    $("#defender-row").append($(strParentElement));
+    $("#enemy-row").append(parentElement);
+  }
+
+  function moveToDefend(defenderElement) {
+    var parentElement = defenderElement[0].parentNode;
+
+    defenderElement.removeClass("enemy").addClass("defender");
+
+    $("#defender-row").append(parentElement);
   }
 
   function initialize() {
@@ -69,13 +80,15 @@ $(document).ready(function(){
   function chooseClick() {   
     var strChosen = $(this).attr("id");
 
-    moveToChosen(strChosen);
+    currCharacter = $(this);
+    
+    moveToChosen($(this));
 
     for (var i = 0; i < arrCharacters.length; i++) {
       var strShortName = arrCharacters[i].strShortName;
 
       if (strChosen !== strShortName) {
-        moveToEnemies(strShortName);
+        moveToEnemies($("#" + strShortName));
       }
     }
 
@@ -83,13 +96,13 @@ $(document).ready(function(){
   }
 
   function enemyClick() {  
-    var strEnemy = $(this).attr("id");
+    currDefender = $(this);
 
-    moveToDefend(strEnemy);
+    moveToDefend($(this));
   }
 
   function attackClick() {
-     
+
   }
 
   function resetClick() {
