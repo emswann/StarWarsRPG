@@ -1,0 +1,43 @@
+/* CSS stylesheet to style HTML elements of the Star Wars game. Needed to add custom styling not handled with Bootstrap.
+ 
+   NAME: style.css
+   AUTHOR: Elaina Swann
+   DATE: 12/09/2017
+   REVISION LOG:  
+*/
+
+#background {
+  height: 100%;
+  left: 0px; 
+  position: fixed;
+  top: 0px;
+  width: 100%;
+  z-index: -1;
+}
+
+.stretch {
+  height: 100%;
+  width: 100%;
+}
+
+h1, h2, h3, h4, h5 {
+  color: #ffffff;
+}
+
+h1 {
+  font-family: "Orbitron", sans-serif;
+  font-size: 7.5rem;
+}
+
+h2 {
+  font-family: "Open Sans", sans-serif;
+}
+
+h3 {
+  font-family: "Oswald", sans-serif;
+}
+
+#obi, #luke, #darth, #leia {
+  height: 14rem;
+  width: 17rem;
+}
