@@ -7,7 +7,21 @@
 */
 
 $(document).ready(function(){
-  const CHARLIST = ["obi", "luke", "darth", "leia"]
+  var objObi   = new character("obi", "Obi Wan Kenobi", 120, 5, 5),
+      objLuke  = new character("luke", "Luke Skywalker", 100, 5, 5),
+      objDarth = new character("darth", "Darth Vader", 150, 5, 5),
+      objLeia  = new character("leia", "Princess Leia", 180, 5, 5);
+
+  var arrCharacters = [objObi, objLuke, objDarth, objLeia];
+
+  function character(strShortName, strFullName, intHealthPts, intAttPow, 
+                     intCAttPow) {
+    this.strShortName = strShortName;
+    this.strFullName  = strFullName;
+    this.intHealthPts = intHealthPts;
+    this.intAttPow    = intAttPow;
+    this.intCAttPow   = intCAttPow;
+  }
 
   function moveToChosen(strChosenName){
     var strThisElement   = $("#" + strChosenName);
@@ -23,22 +37,68 @@ $(document).ready(function(){
 
     strThisElement.removeClass("choose").addClass("enemy");
 
-    $("#enemies-row").append($(strParentElement));
+    $("#enemy-row").append($(strParentElement));
   }
 
-  function chooseClick() {    
+  function moveToDefend(strDefenderName) {
+    var strThisElement   = $("#" + strDefenderName),
+        strParentElement = strThisElement[0].parentNode;
+
+    strThisElement.removeClass("enemy").addClass("defender");
+
+    $("#defender-row").append($(strParentElement));
+  }
+
+  function initialize() {
+    for (var i = 0; i < arrCharacters.length; i++) {
+      var strShortName = arrCharacters[i].strShortName,
+          strFullName  = arrCharacters[i].strFullName;
+
+      var divElement = $("<div>").addClass("col-md-2");
+      var imgElement = $("<img>")
+                       .attr("src", "assets/images/" + strFullName + ".jpg")
+                       .addClass("img-responsive img-thumbnail choose")
+                       .attr("id", strShortName)
+                       .attr("alt", strFullName + " image");
+
+      $(divElement).append($(imgElement));
+      $("#choose-row").append($(divElement));
+    }
+  }
+
+  function chooseClick() {   
     var strChosen = $(this).attr("id");
 
     moveToChosen(strChosen);
 
-    for (var i = 0; i < CHARLIST.length; i++) {
-      if (strChosen !== CHARLIST[i]) {
-        moveToEnemies(CHARLIST[i]);
+    for (var i = 0; i < arrCharacters.length; i++) {
+      var strShortName = arrCharacters[i].strShortName;
+
+      if (strChosen !== strShortName) {
+        moveToEnemies(strShortName);
       }
     }
 
     $("#choose-row").empty();
   }
 
-  $(".choose").on("click", chooseClick);
+  function enemyClick() {  
+    var strEnemy = $(this).attr("id");
+
+    moveToDefend(strEnemy);
+  }
+
+  function attackClick() {
+     
+  }
+
+  function resetClick() {
+
+  }
+
+  initialize();
+  $(document).on("click", ".choose", chooseClick);
+  $(document).on("click", ".enemy", enemyClick);
+  $(document).on("click", ".attack", attackClick);
+  $(document).on("click", ".reset", resetClick);
 });
