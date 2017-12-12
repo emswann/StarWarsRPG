@@ -20,13 +20,13 @@
   width: 100%;
 }
 
-h1, h2, h3, h4, h5 {
-  color: #ffffff;
+h1, h2, h3 {
+  color: white;
 }
 
 h1 {
   font-family: "Orbitron", sans-serif;
-  font-size: 7.5rem;
+  font-size: 6.5rem;
 }
 
 h2 {
@@ -37,7 +37,27 @@ h3 {
   font-family: "Oswald", sans-serif;
 }
 
+#img-col-obi, #img-col-luke, #img-col-darth, #img-col-leia {
+  position: relative;
+}
+
+.img-label {
+  position: absolute;
+  width: 84%;
+}
+
+.name-label {
+  top: 1%;
+}
+
+.number-label {
+  bottom: -3%;
+}
+
 #obi, #luke, #darth, #leia {
-  height: 14rem;
+  background-color: white;
+  border: solid .4rem green;
+  height: 15rem;
+  padding: 1.5rem;
   width: 17rem;
 }
