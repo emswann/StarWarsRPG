@@ -26,7 +26,7 @@ h1, h2, h3 {
 
 h1 {
   font-family: "Orbitron", sans-serif;
-  font-size: 6.5rem;
+  font-size: 6.0rem;
 }
 
 h2 {
@@ -37,7 +37,8 @@ h3 {
   font-family: "Oswald", sans-serif;
 }
 
-#img-col-obi, #img-col-luke, #img-col-darth, #img-col-leia {
+.img-col {
+  padding-right: 0;
   position: relative;
 }
 
@@ -55,9 +56,30 @@ h3 {
 }
 
 #obi, #luke, #darth, #leia {
-  background-color: white;
-  border: solid .4rem green;
   height: 15rem;
   padding: 1.5rem;
   width: 17rem;
+}
+
+.choose, .chosen {
+  background-color: white;
+  border: solid .4rem green;
+}
+
+.enemy {
+  background-color: red;
+  border: solid .4rem gray;
+}
+
+.defender {
+  background-color: black;
+  border: solid .4rem green;
+}
+
+label {
+  color: black;
+}
+
+.defender-label {
+  color: white;
 }

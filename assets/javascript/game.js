@@ -7,17 +7,19 @@
 */
 
 $(document).ready(function(){
-  var objObi   = new character("obi", "Obi Wan Kenobi", 120, 8, 5),
-      objLuke  = new character("luke", "Luke Skywalker", 100, 5, 5),
-      objDarth = new character("darth", "Darth Vader", 150, 5, 5),
-      objLeia  = new character("leia", "Princess Leia", 180, 5, 25);
+  /* Objects are created and re-created in initialize function. */
+  var objObi,
+      objLuke,
+      objDarth,
+      objLeia;
 
-  var arrCharacters = [objObi, objLuke, objDarth, objLeia];
+  /* Array is created and re-created in initialize function. */
+  var arrCharacters;
 
   var currCharacter,
       currDefender;
-
-  var firstAttack = true;
+ 
+  var engagedInBattle = false;
 
   function character(strShortName, strFullName, intHealthPts, intAttPow, 
                      intCAttPow) {
@@ -42,25 +44,25 @@ $(document).ready(function(){
   }
 
   function moveToChosen(chosenElement){
-    var parentElement = chosenElement[0].parentNode;
-
     chosenElement.removeClass("choose").addClass("chosen");
 
-    $("#chosen-row").append(parentElement);
+    $("#chosen-row").append(chosenElement[0].parentNode);
   }
 
   function moveToEnemies(enemyElement) {
-    var parentElement = enemyElement[0].parentNode;
-
     enemyElement.removeClass("choose").addClass("enemy");
 
-    $("#enemy-row").append(parentElement);
+    $("#enemy-row").append(enemyElement[0].parentNode);
   }
 
   function moveToDefender(defenderElement) {
     var parentElement = defenderElement[0].parentNode;
 
     defenderElement.removeClass("enemy").addClass("defender");
+    
+    /* Required to get white font color for defender labels. */
+    $(parentElement.children[1]).addClass("defender-label");
+    $(parentElement.children[2]).addClass("defender-label");
 
     $("#defender-row").append(parentElement);
   }
@@ -69,35 +71,54 @@ $(document).ready(function(){
     var intCharAttack = currCharacter.intAttPow * ++currCharacter.numAttacks;
 
     currDefender.intHealthPts -= intCharAttack;
+    /* Update defender count on webpage. */
+    $("#number-label-" + currDefender.strShortName)
+                       .text(currDefender.intHealthPts);
 
-    currCharacter.intHealthPts -= currDefender.intCAttPow;
+    if (currDefender.intHealthPts <= 0) {
+      engagedInBattle = false;
 
-    /* Update attack messages on webpage */
-    if (firstAttack) {
-      $("#msg-line-2").text(currDefender.strFullName + 
-                            " attacked you back for " +
-                            currDefender.intCAttPow + " damage.");
-      firstAttack = false;
+      if ($("#enemy-row")[0].children.length) {
+        $("#msg-line-1").text("You've defeated " + currDefender.strFullName +
+                              ". Choose another enemy.");
+        $("#msg-line-2").empty();
+      }
+      else { /* No more defenders. You won and game is over. */
+        $("#msg-line-1").text("You won!!! GAME OVER!!!");
+        $("#msg-2").empty();
+        $("#msg-2").append($("<button>").addClass("btn btn-default btn-lg")
+                                        .attr("id", "restart")
+                                        .text("Restart"));
+      }
+      $("#defender-row").empty();
     }
-    $("#msg-line-1").text("You attacked " +
-                          currDefender.strFullName + 
-                          " for " + intCharAttack + " damage.");
+    else { /* Defender is firing back because not defeated yet. */
 
-    if (currCharacter.intHealthPts <= 0) {
-      var restartBtn = $("<button>").addClass("btn btn-default btn-lg")
-                                    .attr("id", "restart")
-                                    .text("Restart");
+      currCharacter.intHealthPts -= currDefender.intCAttPow;
+      /* Update chosen count on webpage. */
+      $("#number-label-" + currCharacter.strShortName)
+                         .text(currCharacter.intHealthPts);
 
-      $("#msg-line-1").text("You've been defeated...GAME OVER!");
-      $("#msg-2").empty();
-      $("#msg-2").append(restartBtn);
-    }
-    else if (currDefender.intHealthPts <=0) {
-
+      /* Check if you are defeated. */
+      if (currCharacter.intHealthPts <= 0) {
+        $("#msg-line-1").text("You've been defeated...GAME OVER!");
+        $("#msg-2").empty();
+        $("#msg-2").append($("<button>").addClass("btn btn-default btn-lg")
+                                        .attr("id", "restart")
+                                        .text("Restart"));
+      }
+      else { /* Update attack messages. */
+        $("#msg-line-1").text("You attacked " +
+                              currDefender.strFullName + 
+                              " for " + intCharAttack + " damage.");
+        $("#msg-line-2").text(currDefender.strFullName + 
+                              " attacked you back for " +
+                              currDefender.intCAttPow + " damage.");
+      }
     }
   }
 
-  function initialize() {
+  function initialize(fullInit) {
 
     function addImage(i) {
       var strShortName = arrCharacters[i].strShortName,
@@ -106,30 +127,51 @@ $(document).ready(function(){
       var divElement = $("<div>")
                        .addClass("col-md-2 img-col")
                        .attr("id", "img-col-" + strShortName);
-      var imgElement = $("<img>")
-                       .attr("src", "assets/images/" + strFullName + ".jpg")
-                       .addClass("img-responsive img choose")
-                       .attr("id", strShortName)
-                       .attr("alt", strFullName + " image");
 
-      $(divElement).append($(imgElement));
-      $("#choose-row").append($(divElement));
+      $(divElement).append($("<img>")
+                           .attr("src", "assets/images/" + strFullName + ".jpg")
+                           .addClass("img-responsive img choose")
+                           .attr("id", strShortName)
+                           .attr("alt", strFullName + " image"));
+      $("#choose-row").append(divElement);
     }
 
     function addLabels(i) {
       var strShortName = arrCharacters[i].strShortName;
 
-      var nameElement   = $("<label>")
-                          .addClass("text-center img-label name-label")
-                          .text(arrCharacters[i].strFullName);
-      var numberElement = $("<label>")
-                          .addClass("text-center img-label number-label")
-                          .attr("id", "number-label-" + strShortName)
-                          .text(arrCharacters[i].intHealthPts);
-
-      $("#img-col-" + strShortName).append($(nameElement));
-      $("#img-col-" + strShortName).append($(numberElement));
+      $("#img-col-" + strShortName).append($("<label>")
+                                           .addClass("text-center img-label name-label")
+                                           .text(arrCharacters[i].strFullName));
+      $("#img-col-" + strShortName).append($("<label>")
+                                           .addClass("text-center img-label number-label")
+                                           .attr("id", "number-label-" + strShortName)
+                                           .text(arrCharacters[i].intHealthPts));
     }
+
+    if (fullInit) {
+      $("#choose-row, #chosen-row, #enemy-row, #defender-row, #msg-line-1,#msg-2").empty();
+
+      $("#msg-2").append($("<h3>").attr("id", "msg-line-2"));
+    }
+
+    /* Make sure you create the characters array before adding images and labels. */
+    objObi   = undefined;
+    objLuke  = undefined;
+    objDarth = undefined;
+    objLeia  = undefined;
+
+    currCharacter = undefined;
+    currDefender  = undefined;
+
+    engagedInBattle = false;
+
+    arrCharacters = [];
+
+    objObi   = new character("obi", "Obi Wan Kenobi", 120, 8, 5);
+    objLuke  = new character("luke", "Luke Skywalker", 100, 5, 5);
+    objDarth = new character("darth", "Darth Vader", 150, 5, 20);
+    objLeia  = new character("leia", "Princess Leia", 180, 5, 25);
+    arrCharacters = [objObi, objLuke, objDarth, objLeia];
 
     for (let i = 0; i < arrCharacters.length; i++) {
       addImage(i);  /* Also creates div for image and labels. */
@@ -137,47 +179,88 @@ $(document).ready(function(){
     }
   }
 
-  function chooseClick() {   
-    var strChosen = $(this).attr("id");
+  function chooseClick() {  
+    try { 
+      var strChosen = $(this).attr("id");
     
-    if (currCharacter = getCharObject($(this))) {   
-      moveToChosen($(this));
+      if (currCharacter = getCharObject($(this))) {   
+        moveToChosen($(this));
 
-      for (let i = 0; i < arrCharacters.length; i++) {
-        var strShortName = arrCharacters[i].strShortName;
+        for (let i = 0; i < arrCharacters.length; i++) {
+          var strShortName = arrCharacters[i].strShortName;
 
-        if (strChosen !== strShortName) {
-          moveToEnemies($("#" + strShortName));
+          if (strChosen !== strShortName) {
+            moveToEnemies($("#" + strShortName));
+          }
         }
-      }
 
-      $("#choose-row").empty();
+        $("#choose-row").empty();
+      }
+      else {
+        throw("chooseClick:Cannot find " + strChosen);
+      }
     }
-    else {
-      throw("chooseClick:Cannot find " + strChosen);
+    catch(error) {
+      alert(error);
     }
   }
 
-  function enemyClick() { 
-    if (currDefender = getCharObject($(this))) {
-      moveToDefender($(this));
+  function enemyClick() {
+    try { 
+      if (!engagedInBattle) {
+        $("#msg-line-1").empty();
+        $("#msg-line-2").empty();
+
+        if (currDefender = getCharObject($(this))) {
+          moveToDefender($(this));
+          engagedInBattle = true;
+        }
+        else {
+          throw("enemyClick:Cannot find " + strChosen);
+        }
+      }
+      else {
+        throw("You can only battle one defender at a time.")
+      }
     }
-    else {
-      throw("enemyClick:Cannot find " + strChosen);
+    catch(error) {
+      alert(error);
     }
+  }
+
+  function checkForDefender() {
+    return $("#defender-row")[0].children.length;
   }
 
   function attackClick() {
-    attackDefender();
+    try {
+      $("#msg-line-1").empty();
+      $("#msg-line-2").empty();
+
+      if (checkForDefender()) {
+      attackDefender();
+      }
+      else {
+        $("#msg-line-1").text("No enemy to fight. Choose one.");
+      }
+    }
+    catch(error) {
+      alert(error);
+    }
   }
 
-  function resetClick() {
-    initialize();
+  function restartClick() {
+    try{
+      initialize(true);
+    }
+    catch(error) {
+      alert(error);
+    }
   }
 
-  initialize();
+  initialize(false);
   $(document).on("click", ".choose", chooseClick);
   $(document).on("click", ".enemy", enemyClick);
   $(document).on("click", "#attack", attackClick);
-  $(document).on("click", "#reset", resetClick);
+  $(document).on("click", "#restart", restartClick);
 });
