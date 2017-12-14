@@ -14,8 +14,8 @@ $(document).ready(function(){
    * @description Launches chosen player attack on a defender and processes results.
   */
   function attackDefender() {
-    var objChosen   = objCharacters.objChosen,
-        objDefender = objCharacters.objDefender;
+    var objChosen   = objCharacters.getChosen(),
+        objDefender = objCharacters.getDefender();
 
     var nChosenAttack = objChosen.nAttPow * ++objChosen.nAttacks;
 
@@ -72,8 +72,9 @@ $(document).ready(function(){
 
     engagedInBattle = false;
 
-    for (let i = 0; i < objCharacters.arrCharacters.length; i++) {
-      var objCharacter = objCharacters.arrCharacters[i];
+    var arrCharacters = objCharacters.getArray();
+    for (let i = 0; i < arrCharacters.length; i++) {
+      var objCharacter = arrCharacters[i];
 
       /* Also creates div for image and labels. */
       renderImage(objCharacter, "#choose-row");  
@@ -91,11 +92,12 @@ $(document).ready(function(){
     try { 
       var strChosen = $(this).attr("id");
     
-      if (objCharacters.objChosen = objCharacters.find($(this))) {  
+      if (objCharacters.setChosen(strChosen)) {  
         moveCharacter($(this), "chosen");
 
-        for (let i = 0; i < objCharacters.arrCharacters.length; i++) {
-          var strShortName = objCharacters.arrCharacters[i].strShortName;
+        var arrCharacters = objCharacters.getArray();
+        for (let i = 0; i < arrCharacters.length; i++) {
+          var strShortName = arrCharacters[i].strShortName;
 
           if (strChosen !== strShortName) {
             moveCharacter($("#" + strShortName), "enemy");
@@ -123,7 +125,7 @@ $(document).ready(function(){
       if (!engagedInBattle) {
         clearMsgLines();
 
-        if (objCharacters.objDefender = objCharacters.find($(this))) {
+        if (objCharacters.setDefender($(this).attr("id"))) {
           moveCharacter($(this), "defender");
           engagedInBattle = true;
         }
