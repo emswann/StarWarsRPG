@@ -1,16 +1,18 @@
-/* JavaScript source code to execute the Star Wars game.
- 
-   NAME: game.js
-   AUTHOR: Elaina Swann
-   DATE: 12/16/2017
-   REVISION LOG:  
-*/
+/**
+ * @file Main file for executing Star Wars RPG game.
+ * @author Elaina Swann
+ * @version 1.0 
+ */
 
 $(document).ready(function(){
   var objCharacters = undefined;
 
   var engagedInBattle = false;
 
+  /** 
+   * @function attackDefender 
+   * @description Launches chosen player attack on a defender and processes results.
+  */
   function attackDefender() {
     var objChosen   = objCharacters.objChosen,
         objDefender = objCharacters.objDefender;
@@ -49,6 +51,11 @@ $(document).ready(function(){
     }
   }
 
+  /** 
+   * @function initialize 
+   * @description Sets up HTML webpage for start of game play.
+   * @param {boolean} fullInit - Designates whether or not to perform full initialization. Full initialization is required when the game restarts. It is not required when the webpage is first rendered.
+  */
   function initialize(fullInit) {
     if (fullInit) {
       $("#choose-row, #chosen-row, #enemy-row, #defender-row, #msg-line-1,#msg-2").empty();
@@ -76,6 +83,10 @@ $(document).ready(function(){
     }
   }
 
+  /** 
+   * @function chooseClick 
+   * @description Performs processing required when gamer selects a chosen character to represent self.
+  */
   function chooseClick() {  
     try { 
       var strChosen = $(this).attr("id");
@@ -102,6 +113,11 @@ $(document).ready(function(){
     }
   }
 
+  /** 
+   * @function enemyClick 
+   * @description Performs processing required when gamer selects a defender to fight.
+   * @throws Error when have already designated a defender and try to select another one.
+  */
   function enemyClick() {
     try { 
       if (!engagedInBattle) {
@@ -124,6 +140,10 @@ $(document).ready(function(){
     }
   }
 
+  /** 
+   * @function attackClick 
+   * @description Performs processing required when gamer attacks the defender.
+  */
   function attackClick() {
     try {
       clearMsgLines();
@@ -150,8 +170,34 @@ $(document).ready(function(){
   }
 
   initialize(false);
+
+  /* NOTE: The event listeners are placed on $(document) due to the dynamic nature of the selectors. */
+
+  /** 
+   * @event .on ("click") 
+   * @listens .choose When gamer choses player to represent self. 
+   * @param {function} chooseClick
+  */
   $(document).on("click", ".choose", chooseClick);
+
+  /** 
+   * @event .on ("click") 
+   * @listens .enemy When gamer choses player to compete against. 
+   * @param {function} enemyClick
+  */
   $(document).on("click", ".enemy", enemyClick);
+
+  /** 
+   * @event .on ("click") 
+   * @listens #attack When gamer choses to attack defender. 
+   * @param {function} attackClick
+  */
   $(document).on("click", "#attack", attackClick);
+
+  /** 
+   * @event .on ("click") 
+   * @listens #restart When gamer choses player to restart game. 
+   * @param {function} restartClick
+  */
   $(document).on("click", "#restart", restartClick);
 });
