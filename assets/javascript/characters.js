@@ -35,10 +35,10 @@ function Characters() {
    * @returns {array} Array of new constructed Character objects.
   */
   this.arrCharacters = (function () {
-    return [new Character("obi", "Obi Wan Kenobi", 120, 8, 5),
-            new Character("luke", "Luke Skywalker", 100, 5, 5),
-            new Character("darth", "Darth Vader", 150, 5, 20),
-            new Character("leia", "Princess Leia", 180, 5, 25)];
+    return [new Character("obi", "Obi Wan Kenobi", 120, 8, 10),
+            new Character("luke", "Luke Skywalker", 100, 15, 5),
+            new Character("darth", "Darth Vader", 150, 4, 20),
+            new Character("leia", "Princess Leia", 180, 3, 25)];
   })();
 
   /** 
@@ -89,7 +89,7 @@ Characters.prototype.getDefender = function() {
   * @param {string} strShortName - Short name of game character used for search.
 */
 Characters.prototype.setDefender = function(strShortName) {
-  return ((this.objDefender = this.find(strShortName)) ? true : false);
+    return ((this.objDefender = this.find(strShortName)) ? true : false);  
 }
 
 /** 
