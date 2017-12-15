@@ -14,8 +14,8 @@ $(document).ready(function(){
    * @description Launches chosen player attack on a defender and processes results.
   */
   function attackDefender() {
-    var objChosen   = objCharacters.getChosen(),
-        objDefender = objCharacters.getDefender();
+    var objChosen   = objCharacters.chosen(),
+        objDefender = objCharacters.defender();
 
     var nChosenAttack = objChosen.nAttPow * ++objChosen.nAttacks;
 
@@ -72,7 +72,7 @@ $(document).ready(function(){
 
     engagedInBattle = false;
 
-    var arrCharacters = objCharacters.getArray();
+    var arrCharacters = objCharacters.array();
     for (let i = 0; i < arrCharacters.length; i++) {
         renderImage(arrCharacters[i], "#choose-row");  
     }
@@ -86,10 +86,10 @@ $(document).ready(function(){
     try { 
       var strChosen = $(this).children("img").attr("id");
     
-      if (objCharacters.setChosen(strChosen)) {  
+      if (objCharacters.chosen(strChosen)) {  
         moveCharacter($(this), "chosen");
 
-        var arrCharacters = objCharacters.getArray();
+        var arrCharacters = objCharacters.array();
         for (let i = 0; i < arrCharacters.length; i++) {
           var strShortName = arrCharacters[i].strShortName;
 
@@ -120,7 +120,7 @@ $(document).ready(function(){
         var strChosen = $(this).children("img").attr("id");
         clearMsgLines();
 
-        if (objCharacters.setDefender(strChosen)) {
+        if (objCharacters.defender(strChosen)) {
           moveCharacter($(this), "defender");
           engagedInBattle = true;
         }

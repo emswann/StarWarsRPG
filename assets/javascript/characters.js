@@ -55,49 +55,43 @@ function Characters() {
 }
 
 /** 
-  * @method getChosen
-  * @description Getter function for this.objChosen.
+  * @method chosen
+  * @description Getter/setter function for this.objChosen. Type of function depends on whether parameter is defined (setter) or is not (getter).
   * @param {string} strShortName - Short name of game character used for search.
-  * @returns {Character} Character object designated as chosen.
+  * @returns {Character} Character object designated as chosen or undefined if the Character object is not designated.
 */
-Characters.prototype.getChosen = function() {
-  return this.objChosen;
+Characters.prototype.chosen = function(strShortName) {
+  if (strShortName) {
+    return ((this.objChosen = this.find(strShortName)) ?
+             this.objChosen : undefined);
+  }
+  else {
+    return this.objChosen;
+  }
 }
 
 /** 
-  * @method setChosen
-  * @description Setter function for this.objChosen.
+  * @method defender
+  * @description Getter/setter function for this.objDefender. Type of function depends on whether parameter is defined (setter) or is not (getter).
   * @param {string} strShortName - Short name of game character used for search.
+  * @returns {Character} Character object designated as defender or undefined if the Character object is not designated.
 */
-Characters.prototype.setChosen = function(strShortName) {
-  return ((this.objChosen = this.find(strShortName)) ? true : false);
+Characters.prototype.defender = function(strShortName) {
+  if (strShortName) {
+    return ((this.objDefender = this.find(strShortName)) ?
+             this.objDefender : undefined);
+  }
+  else {
+    return this.objDefender;
+  }
 }
 
 /** 
-  * @method getDefender
-  * @description Getter function for this.objDefender.
-  * @param {string} strShortName - Short name of game character used for search.
-  * @returns {Character} Character object designated as defender.
-*/
-Characters.prototype.getDefender = function() {
-  return this.objDefender;
-}
-
-/** 
-  * @method setDefender
-  * @description Setter function for this.objDefender.
-  * @param {string} strShortName - Short name of game character used for search.
-*/
-Characters.prototype.setDefender = function(strShortName) {
-    return ((this.objDefender = this.find(strShortName)) ? true : false);  
-}
-
-/** 
-  * @method getArray
+  * @method array
   * @description Getter function for this.arrCharacters.
   * @returns {array} Characters array.
 */
-Characters.prototype.getArray = function() {
+Characters.prototype.array = function() {
   return this.arrCharacters;
 }
 
