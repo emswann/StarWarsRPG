@@ -74,13 +74,7 @@ $(document).ready(function(){
 
     var arrCharacters = objCharacters.getArray();
     for (let i = 0; i < arrCharacters.length; i++) {
-      var objCharacter = arrCharacters[i];
-
-      /* Also creates div for image and labels. */
-      renderImage(objCharacter, "#choose-row");  
-
-      renderLabel(objCharacter, "name"); /* Must be done after adding image. */
-      renderLabel(objCharacter, "number");
+        renderImage(arrCharacters[i], "#choose-row");  
     }
   }
 
@@ -90,7 +84,7 @@ $(document).ready(function(){
   */
   function chooseClick() {  
     try { 
-      var strChosen = $(this).attr("id");
+      var strChosen = $(this).children("img").attr("id");
     
       if (objCharacters.setChosen(strChosen)) {  
         moveCharacter($(this), "chosen");
@@ -100,7 +94,7 @@ $(document).ready(function(){
           var strShortName = arrCharacters[i].strShortName;
 
           if (strChosen !== strShortName) {
-            moveCharacter($("#" + strShortName), "enemy");
+            moveCharacter($("#" + strShortName).parent(), "enemy");
           }
         }
 
@@ -123,9 +117,10 @@ $(document).ready(function(){
   function enemyClick() {
     try { 
       if (!engagedInBattle) {
+        var strChosen = $(this).children("img").attr("id");
         clearMsgLines();
 
-        if (objCharacters.setDefender($(this).attr("id"))) {
+        if (objCharacters.setDefender(strChosen)) {
           moveCharacter($(this), "defender");
           engagedInBattle = true;
         }

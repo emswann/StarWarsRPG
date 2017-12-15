@@ -58,7 +58,7 @@ function moveCharacter(charElement, strLocation){
 
   /* Required to get white font color for defender labels. */
   if (strLocation === "defender") {
-    charElement.parent().children("label").addClass("defender-label");
+    charElement.children("label").addClass("defender-label");
   }
 
   $(strRow).append(charElement.parent());
@@ -71,36 +71,29 @@ function moveCharacter(charElement, strLocation){
  * @param {string} strRowID - Row to move element including # designation. 
 */
 function renderImage(objCharacter, strRowID) {
-  var divElement = $("<div>")
-                   .addClass("col-md-2 img-col")
-                   .attr("id", "img-col-" + objCharacter.strShortName);
+  var strSel = "#img-col-" + objCharacter.strShortName;
 
-  $(divElement).append($("<img>")
-               .attr("src", "assets/images/" + 
-                             objCharacter.strFullName + ".jpg")
-               .addClass("img-responsive img choose")
-               .attr("id", objCharacter.strShortName)
-               .attr("alt", objCharacter.strFullName + " image"));
+  var divElement = $("<div>").addClass("col-md-2");
 
-  $(strRowID).append(divElement);
-}
+  var imgElement = $("<div>")
+        .addClass("img-col choose")
+        .attr("id", strSel)
+        .append($("<label>")
+                    .addClass("text-center img-label name-label")
+                    .attr("id", "name-label-" + objCharacter.strShortName)
+                    .text(objCharacter.strFullName))
+        .append($("<img>")
+                    .attr("src", "assets/images/" + 
+                          objCharacter.strFullName + ".jpg")
+                    .addClass("img-responsive img")
+                    .attr("id", objCharacter.strShortName)
+                    .attr("alt", objCharacter.strFullName + " image"))
+        .append($("<label>")
+                    .addClass("text-center img-label number-label")
+                    .attr("id", "number-label-" + objCharacter.strShortName)
+                    .text(objCharacter.nHealthPts));  
 
-/** 
- * @function renderLabel 
- * @description Adds a label to a game character element.
- * @param {Character} objCharacter - Single game Character object.
- * @param {string} strType - Label type (expects name or number). 
-*/
-function renderLabel(objCharacter, strType) {
-  var text = (strType === "name") ? objCharacter.strFullName :
-                                    objCharacter.nHealthPts;
-
-  $("#img-col-" + objCharacter.strShortName)
-                .append($("<label>")
-                .addClass("text-center img-label")
-                .addClass(strType + "-label")
-                .attr("id", strType + "-label-" + objCharacter.strShortName)
-                .text(text));
+  $(strRowID).append(divElement.append(imgElement));
 }
 
 /** 

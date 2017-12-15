@@ -40,26 +40,7 @@ h3 {
 }
 
 .img-col {
-  padding-right: 0;
-  position: relative;
-}
-
-.img-label {
-  position: absolute;
-  width: 84%;
-}
-
-.name-label {
-  top: 1%;
-}
-
-.number-label {
-  bottom: -3%;
-}
-
-#obi, #luke, #darth, #leia {
   height: 15rem;
-  padding: 1.5rem;
   width: 17rem;
 }
 
@@ -78,8 +59,17 @@ h3 {
   border: solid .4rem green;
 }
 
+#obi, #luke, #darth, #leia {
+  height: 74%;
+  padding: 0 1rem;
+  width: 100%;
+}
+
 label {
   color: black;
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }
 
 .defender-label {
