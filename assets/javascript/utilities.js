@@ -5,7 +5,7 @@
  */
 
 /** 
- * @function myFunction 
+ * @function clearMsgLines 
  * @description Removes all elements of the message lines.
 */
 function clearMsgLines() {
