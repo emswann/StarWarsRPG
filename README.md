@@ -1,2 +1,2 @@
 # week-4-game
-Star Wars RPG Game - Challenge
+Star Wars RPG Game
