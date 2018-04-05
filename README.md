@@ -1,6 +1,6 @@
 # Stars Wars RPG Game
 
-Star Wars uses JavaScript and jQuery to create an interactice role playing game. The application is developed using an Object-oriented approach and makes use of constructor classes to represent the characters.
+Star Wars uses JavaScript and jQuery to create an interactive role playing game. The application is developed using an Object-oriented approach and makes use of constructor classes to represent the characters.
 
 Each character in the game has three attributes: Health Points, Attack Power and Counter Attack Power.
 
